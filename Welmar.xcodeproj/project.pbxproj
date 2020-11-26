@@ -12,6 +12,7 @@
 		6F902DAB256F7C1F00CF9275 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F902DAA256F7C1F00CF9275 /* GoogleService-Info.plist */; };
 		6F902DD3256F9BF500CF9275 /* UIViewController+Alerts.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F902DD1256F9BF500CF9275 /* UIViewController+Alerts.m */; };
 		6F902DDD256FB58A00CF9275 /* PortofolioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F902DDC256FB58A00CF9275 /* PortofolioViewController.m */; };
+		6F902DE1256FF13600CF9275 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F902DE0256FF13600CF9275 /* ViewController.m */; };
 		6FD680F5256DF5BD00E58A50 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FD680F4256DF5BD00E58A50 /* AppDelegate.m */; };
 		6FD680F8256DF5BD00E58A50 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FD680F7256DF5BD00E58A50 /* SceneDelegate.m */; };
 		6FD680FB256DF5BD00E58A50 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FD680FA256DF5BD00E58A50 /* LoginViewController.m */; };
@@ -33,6 +34,8 @@
 		6F902DD2256F9BF500CF9275 /* UIViewController+Alerts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Alerts.h"; sourceTree = "<group>"; };
 		6F902DDB256FB58A00CF9275 /* PortofolioViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PortofolioViewController.h; sourceTree = "<group>"; };
 		6F902DDC256FB58A00CF9275 /* PortofolioViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PortofolioViewController.m; sourceTree = "<group>"; };
+		6F902DDF256FF13600CF9275 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		6F902DE0256FF13600CF9275 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		6FD680F0256DF5BD00E58A50 /* Welmar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Welmar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FD680F3256DF5BD00E58A50 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		6FD680F4256DF5BD00E58A50 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -126,6 +129,8 @@
 				6F273181256E2FEE00B3D531 /* RegisterViewController.m */,
 				6F902DDB256FB58A00CF9275 /* PortofolioViewController.h */,
 				6F902DDC256FB58A00CF9275 /* PortofolioViewController.m */,
+				6F902DDF256FF13600CF9275 /* ViewController.h */,
+				6F902DE0256FF13600CF9275 /* ViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -253,6 +258,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F902DE1256FF13600CF9275 /* ViewController.m in Sources */,
 				6FD680FB256DF5BD00E58A50 /* LoginViewController.m in Sources */,
 				6F902DDD256FB58A00CF9275 /* PortofolioViewController.m in Sources */,
 				6F902DD3256F9BF500CF9275 /* UIViewController+Alerts.m in Sources */,

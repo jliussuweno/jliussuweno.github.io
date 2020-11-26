@@ -190,7 +190,6 @@
                                 </state>
                                 <connections>
                                     <action selector="loginButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8HC-Id-IFF"/>
-                                    <segue destination="QjX-8X-oH4" kind="show" id="bwh-3J-0qv"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lupa BCA ID (User ID)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C4h-cN-4uG">
@@ -263,6 +262,7 @@
                         <outlet property="registerButton" destination="fFM-5G-w3x" id="lhK-M9-zEg"/>
                         <outlet property="slideImageCollectionView" destination="VQj-a5-IRN" id="0GV-4G-EW1"/>
                         <segue destination="YVj-hG-fer" kind="show" id="7xc-3n-6lm"/>
+                        <segue destination="QjX-8X-oH4" kind="show" id="hFN-OC-KIN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -541,10 +541,10 @@
             </objects>
             <point key="canvasLocation" x="-175.36231884057972" y="-50.223214285714285"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--View Controller-->
         <scene sceneID="WDU-qw-eNT">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="QjX-8X-oH4" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="ViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="QjX-8X-oH4" customClass="ViewController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="vCk-U6-rb8"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Xhl-sr-RKa">
@@ -553,7 +553,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="OGN-XD-Wfg" kind="relationship" relationship="viewControllers" id="E81-o6-Kj9"/>
+                        <segue destination="OGN-XD-Wfg" kind="relationship" relationship="viewControllers" id="50L-Ca-WuR"/>
                         <segue destination="9NY-iO-oKQ" kind="relationship" relationship="viewControllers" id="tOI-lZ-Zi6"/>
                         <segue destination="pw2-9d-TS4" kind="relationship" relationship="viewControllers" id="vhV-Rf-nZw"/>
                         <segue destination="lL1-fL-rfj" kind="relationship" relationship="viewControllers" id="9Wy-oe-mRp"/>

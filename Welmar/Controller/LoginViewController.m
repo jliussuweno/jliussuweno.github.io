@@ -8,7 +8,7 @@
 #import "LoginViewController.h"
 #import "CollectionViewCell.h"
 #import "UIViewController+Alerts.h"
-#import "PortofolioViewController.h"
+#import "ViewController.h"
 @import Firebase;
 
 #import <CommonCrypto/CommonDigest.h>
@@ -92,12 +92,13 @@
                                     [resolver resolveSignInWithAssertion:assertion completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error) {
                                         if (error) {
                                             NSLog(@"Multi factor finanlize sign in failed. Error: %@", error.description);
-                                        } else {
-                                            NSLog(@"Masuk sini");
-                                            PortofolioViewController *portVC = [[PortofolioViewController alloc]init];
-                                            portVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
-                                            [self.navigationController presentViewController:portVC animated:YES completion:nil];
                                         }
+//                                        else {
+//                                            NSLog(@"Masuk sini");
+//                                            PortofolioViewController *portVC = [[PortofolioViewController alloc]init];
+//                                            portVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
+//                                            [self.navigationController presentViewController:portVC animated:YES completion:nil];
+//                                        }
                                     }];
                                 }];
                             }
@@ -106,16 +107,40 @@
                 } else if (error) {
                     [self showMessagePrompt:error.localizedDescription];
                     return;
+                } else {
+                    [self showMessagePromptLogin:@"Success"];
                 }
-                PortofolioViewController *portVC = [[PortofolioViewController alloc]init];
-                portVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
-                [self.navigationController presentViewController:portVC animated:YES completion:nil];
                 //          [self.navigationController popViewControllerAnimated:YES];
             }];
+            
             // [END_EXCLUDE]
         }];
         // [END headless_email_auth]
     }];
+}
+
+
+- (void)showMessagePromptLogin:(NSString *)message {
+  UIAlertController *alert =
+      [UIAlertController alertControllerWithTitle:nil
+                                          message:message
+                                   preferredStyle:UIAlertControllerStyleAlert];
+  UIAlertAction *okAction =
+      [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:
+       ^(UIAlertAction * action) {
+          
+          UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+          UITabBarController *tabObj = (ViewController*) [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+          
+//          self.window.rootViewController = tabObj;
+          
+          ViewController *tabBarVC = [[ViewController alloc]init];
+          tabObj.modalPresentationStyle = UIModalPresentationOverFullScreen;
+          [self.navigationController presentViewController:tabObj animated:YES completion:nil];
+               }
+           ];
+  [alert addAction:okAction];
+    [self presentViewController:alert animated:YES completion: nil];
 }
 
 - (void)startTimerThread {
