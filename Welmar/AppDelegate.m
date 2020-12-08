@@ -17,6 +17,19 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    [[UITabBar appearance] setTintColor:[UIColor yellowColor]];
+    
+    // Add this code to change StateNormal text Color,
+    [UITabBarItem.appearance setTitleTextAttributes:
+     @{NSForegroundColorAttributeName : [UIColor whiteColor]}
+                                           forState:UIControlStateNormal];
+    
+    // then if StateSelected should be different, you should add this code
+    [UITabBarItem.appearance setTitleTextAttributes:
+     @{NSForegroundColorAttributeName : [UIColor yellowColor]}
+                                           forState:UIControlStateSelected];
+    
     [FIRApp configure];
     return YES;
 }

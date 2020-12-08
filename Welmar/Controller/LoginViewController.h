@@ -14,6 +14,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *registerButton;
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (weak, nonatomic) IBOutlet UIStackView *userIDStackView;
+@property (weak, nonatomic) IBOutlet UIStackView *passwordStackVIew;
+@property (weak, nonatomic) IBOutlet UIStackView *stack1;
+@property (weak, nonatomic) IBOutlet UIStackView *stack2;
 
 
 @end

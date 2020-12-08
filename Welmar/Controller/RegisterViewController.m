@@ -18,6 +18,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.hidesBackButton = YES;
+    
+    _registerButton.layer.cornerRadius = 5;
+    
+    _loginButton.layer.cornerRadius = 5;
+    [_loginButton.layer setBorderWidth:1.0];
+    [_loginButton.layer setBorderColor:[[UIColor colorWithRed:6.0f/255.0f
+                                                           green:170.0f/255.0f
+                                                            blue:190.0f/255.0f
+                                                           alpha:1.0f] CGColor]];
 }
 
 - (IBAction)registerButtonPressed:(id)sender {

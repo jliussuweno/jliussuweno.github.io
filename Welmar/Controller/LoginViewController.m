@@ -9,6 +9,7 @@
 #import "CollectionViewCell.h"
 #import "UIViewController+Alerts.h"
 #import "ViewController.h"
+#import "AppDelegate.h"
 @import Firebase;
 
 #import <CommonCrypto/CommonDigest.h>
@@ -28,12 +29,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    UINavigationBar *nav = self.navigationController.navigationBar;
+    nav.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
     imagesArray = [[NSMutableArray alloc]init];
-    NSData * imageData1 = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: @"https://picsum.photos/id/0/5616/3744"]];
+    NSData * imageData1 = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: @"https://firebasestorage.googleapis.com/v0/b/jwelma.appspot.com/o/Picture%201.png?alt=media&token=fe804523-cfcd-4ad9-8d4b-17acc066e3e9"]];
     UIImage *img1 = [UIImage imageWithData: imageData1];
-    NSData * imageData2 = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: @"https://picsum.photos/id/1/5616/3744"]];
+    NSData * imageData2 = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: @"https://firebasestorage.googleapis.com/v0/b/jwelma.appspot.com/o/Picture%202.png?alt=media&token=70b406c6-fd90-425d-a4ef-3f16edfffda2"]];
     UIImage *img2 = [UIImage imageWithData: imageData2];
-    NSData * imageData3 = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: @"https://picsum.photos/id/10/2500/1667"]];
+    NSData * imageData3 = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: @"https://firebasestorage.googleapis.com/v0/b/jwelma.appspot.com/o/Picture%203.jpeg?alt=media&token=5cb75906-45c5-4731-b583-dd1122e90960"]];
     UIImage *img3 = [UIImage imageWithData: imageData3];
     
     [imagesArray addObject:img1];
@@ -44,102 +47,105 @@
     _pageIndicator.numberOfPages = imagesArray.count;
     [self startTimerThread];
     
-    _loginButton.layer.cornerRadius = 10;
+    _loginButton.layer.cornerRadius = 5;
     
     [_registerButton.layer setBorderWidth:1.0];
-    [_registerButton.layer setBorderColor:[[UIColor systemTealColor] CGColor]];
-    _registerButton.layer.cornerRadius = 10;
+    [_registerButton.layer setBorderColor:[[UIColor colorWithRed:6.0f/255.0f
+                                                           green:170.0f/255.0f
+                                                            blue:190.0f/255.0f
+                                                           alpha:1.0f] CGColor]];
+    _registerButton.layer.cornerRadius = 5;
+
+    
     
 }
 - (IBAction)loginButtonPressed:(id)sender {
-    [self showSpinner:^{
-        // [START headless_email_auth]
-        [[FIRAuth auth] signInWithEmail:self->_emailTextField.text
-                               password:self->_passwordTextField.text
-                             completion:^(FIRAuthDataResult * _Nullable authResult,
-                                          NSError * _Nullable error) {
-            // [START_EXCLUDE]
-            [self hideSpinner:^{
-                if (error && error.code == FIRAuthErrorCodeSecondFactorRequired) {
-                    FIRMultiFactorResolver *resolver = error.userInfo[FIRAuthErrorUserInfoMultiFactorResolverKey];
-                    NSMutableString *displayNameString = [NSMutableString string];
-                    for (FIRMultiFactorInfo *tmpFactorInfo in resolver.hints) {
-                        [displayNameString appendString:tmpFactorInfo.displayName];
-                        [displayNameString appendString:@" "];
-                    }
-                    [self showTextInputPromptWithMessage:[NSString stringWithFormat:@"Select factor to sign in\n%@", displayNameString]
-                                         completionBlock:^(BOOL userPressedOK, NSString *_Nullable displayName) {
-                        FIRPhoneMultiFactorInfo* selectedHint;
+    
+    NSString *email = _emailTextField.text;
+    NSString *password = _passwordTextField.text;
+    
+    if ([email length] == 0) {
+        [self showMessagePrompt:@"Email harus diisi."];
+    } else if ([password length] == 0) {
+        [self showMessagePrompt:@"Password harus diisi."];
+    } else {
+        [self showSpinner:^{
+            // [START headless_email_auth]
+            [[FIRAuth auth] signInWithEmail:self->_emailTextField.text
+                                   password:self->_passwordTextField.text
+                                 completion:^(FIRAuthDataResult * _Nullable authResult,
+                                              NSError * _Nullable error) {
+                // [START_EXCLUDE]
+                [self hideSpinner:^{
+                    if (error && error.code == FIRAuthErrorCodeSecondFactorRequired) {
+                        FIRMultiFactorResolver *resolver = error.userInfo[FIRAuthErrorUserInfoMultiFactorResolverKey];
+                        NSMutableString *displayNameString = [NSMutableString string];
                         for (FIRMultiFactorInfo *tmpFactorInfo in resolver.hints) {
-                            if ([displayName isEqualToString:tmpFactorInfo.displayName]) {
-                                selectedHint = (FIRPhoneMultiFactorInfo *)tmpFactorInfo;
-                            }
+                            [displayNameString appendString:tmpFactorInfo.displayName];
+                            [displayNameString appendString:@" "];
                         }
-                        [FIRPhoneAuthProvider.provider
-                         verifyPhoneNumberWithMultiFactorInfo:selectedHint
-                         UIDelegate:nil
-                         multiFactorSession:resolver.session
-                         completion:^(NSString * _Nullable verificationID, NSError * _Nullable error) {
-                            if (error) {
-                                NSLog(@"Multi factor start sign in failed. Error: %@", error.description);
-                            } else {
-                                [self showTextInputPromptWithMessage:[NSString stringWithFormat:@"Verification code for %@", selectedHint.displayName]
-                                                     completionBlock:^(BOOL userPressedOK, NSString *_Nullable verificationCode) {
-                                    FIRPhoneAuthCredential *credential =
-                                    [[FIRPhoneAuthProvider provider] credentialWithVerificationID:verificationID
-                                                                                 verificationCode:verificationCode];
-                                    FIRMultiFactorAssertion *assertion = [FIRPhoneMultiFactorGenerator assertionWithCredential:credential];
-                                    [resolver resolveSignInWithAssertion:assertion completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error) {
-                                        if (error) {
-                                            NSLog(@"Multi factor finanlize sign in failed. Error: %@", error.description);
-                                        }
-//                                        else {
-//                                            NSLog(@"Masuk sini");
-//                                            PortofolioViewController *portVC = [[PortofolioViewController alloc]init];
-//                                            portVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
-//                                            [self.navigationController presentViewController:portVC animated:YES completion:nil];
-//                                        }
-                                    }];
-                                }];
+                        [self showTextInputPromptWithMessage:[NSString stringWithFormat:@"Select factor to sign in\n%@", displayNameString]
+                                             completionBlock:^(BOOL userPressedOK, NSString *_Nullable displayName) {
+                            FIRPhoneMultiFactorInfo* selectedHint;
+                            for (FIRMultiFactorInfo *tmpFactorInfo in resolver.hints) {
+                                if ([displayName isEqualToString:tmpFactorInfo.displayName]) {
+                                    selectedHint = (FIRPhoneMultiFactorInfo *)tmpFactorInfo;
+                                }
                             }
+                            [FIRPhoneAuthProvider.provider
+                             verifyPhoneNumberWithMultiFactorInfo:selectedHint
+                             UIDelegate:nil
+                             multiFactorSession:resolver.session
+                             completion:^(NSString * _Nullable verificationID, NSError * _Nullable error) {
+                                if (error) {
+                                    NSLog(@"Multi factor start sign in failed. Error: %@", error.description);
+                                } else {
+                                    [self showTextInputPromptWithMessage:[NSString stringWithFormat:@"Verification code for %@", selectedHint.displayName]
+                                                         completionBlock:^(BOOL userPressedOK, NSString *_Nullable verificationCode) {
+                                        FIRPhoneAuthCredential *credential =
+                                        [[FIRPhoneAuthProvider provider] credentialWithVerificationID:verificationID
+                                                                                     verificationCode:verificationCode];
+                                        FIRMultiFactorAssertion *assertion = [FIRPhoneMultiFactorGenerator assertionWithCredential:credential];
+                                        [resolver resolveSignInWithAssertion:assertion completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error) {
+                                            if (error) {
+                                                NSLog(@"Multi factor finanlize sign in failed. Error: %@", error.description);
+                                            }
+                                        }];
+                                    }];
+                                }
+                            }];
                         }];
-                    }];
-                } else if (error) {
-                    [self showMessagePrompt:error.localizedDescription];
-                    return;
-                } else {
-                    [self showMessagePromptLogin:@"Success"];
-                }
-                //          [self.navigationController popViewControllerAnimated:YES];
+                    } else if (error) {
+                        [self showMessagePrompt:error.localizedDescription];
+                        return;
+                    } else {
+                        [self showMessagePromptLogin:@"Berhasil Login!"];
+                    }
+                }];
+                
+                // [END_EXCLUDE]
             }];
-            
-            // [END_EXCLUDE]
+            // [END headless_email_auth]
         }];
-        // [END headless_email_auth]
-    }];
+    }
 }
 
 
 - (void)showMessagePromptLogin:(NSString *)message {
-  UIAlertController *alert =
-      [UIAlertController alertControllerWithTitle:nil
-                                          message:message
-                                   preferredStyle:UIAlertControllerStyleAlert];
-  UIAlertAction *okAction =
-      [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:
-       ^(UIAlertAction * action) {
-          
-          UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-          UITabBarController *tabObj = (ViewController*) [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
-          
-//          self.window.rootViewController = tabObj;
-          
-          ViewController *tabBarVC = [[ViewController alloc]init];
-          tabObj.modalPresentationStyle = UIModalPresentationOverFullScreen;
-          [self.navigationController presentViewController:tabObj animated:YES completion:nil];
-               }
-           ];
-  [alert addAction:okAction];
+    UIAlertController *alert =
+    [UIAlertController alertControllerWithTitle:nil
+                                        message:message
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction =
+    [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:
+     ^(UIAlertAction * action) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        ViewController *tabObj = (ViewController*) [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+        tabObj.modalPresentationStyle = UIModalPresentationOverFullScreen;
+        [self presentViewController:tabObj animated:YES completion:nil];
+    }
+     ];
+    [alert addAction:okAction];
     [self presentViewController:alert animated:YES completion: nil];
 }
 

@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PortofolioViewController : UIViewController
+@interface PortofolioViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
 @end
 
